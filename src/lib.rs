@@ -22,6 +22,7 @@
 //!     use std::str::FromStr;
 //!     use std::net::{SocketAddr, SocketAddrV4};
 //!     use udt::*;
+//!     use libudt4_sys::EPOLLOpt;
 //!
 //!     let localhost = std::net::Ipv4Addr::from_str("127.0.0.1").unwrap();
 //!
@@ -54,6 +55,7 @@ use std::ffi::CStr;
 use std::mem::size_of;
 use std::net::SocketAddr;
 use std::net::SocketAddrV4;
+
 
 #[cfg(windows)]
 #[macro_use]
@@ -101,10 +103,11 @@ bitflags! {
 ///
 /// ```
 /// # use udt::*;
+/// use libudt4_sys::EPOLLOpt;
 /// let mut events = EpollEvents::all();
-/// events.remove(UDT_EPOLL_ERR);
-/// assert!(events.contains(UDT_EPOLL_OUT));
-/// assert!(! events.contains(UDT_EPOLL_ERR));
+/// events.remove(EpollEvents::UDT_EPOLL_ERR);
+/// assert!(events.contains(EpollEvents::UDT_EPOLL_OUT));
+/// assert!(! events.contains(EpollEvents::UDT_EPOLL_ERR));
 /// ```
     pub struct EpollEvents: c_int {
         /// An Epoll Event to watch for read events
