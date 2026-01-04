@@ -1,8 +1,23 @@
+
 extern crate udt;
 #[macro_use]
 extern crate log;
 
+use libc::c_int;
+
+bitflags! {
+    #[repr(C)]
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct EPOLLOpt: c_int {
+        const UDT_EPOLL_IN = 0x1;
+        const UDT_EPOLL_OUT = 0x4;
+        const UDT_EPOLL_ERR = 0x8;
+    }
+}
+
 use std::str;
+use bitflags::bitflags;
+
 use udt::*;
 
 #[cfg(any(target_os = "linux", target_os = "windows"))]
@@ -358,7 +373,7 @@ fn test_epoll2() {
         let mut epoll = Epoll::create().unwrap();
 
         epoll
-            .add_usock(&sock, Some(UDT_EPOLL_ERR | UDT_EPOLL_IN))
+            .add_usock(&sock, Some(EpollEvents::UDT_EPOLL_ERR | EpollEvents::UDT_EPOLL_IN))
             .unwrap();
 
         let mut counter = 0;
@@ -374,7 +389,7 @@ fn test_epoll2() {
                     let (new, peer) = sock.accept().unwrap();
                     println!("Server recieved connection from {:?}", peer);
                     epoll
-                        .add_usock(&new, Some(UDT_EPOLL_ERR | UDT_EPOLL_IN))
+                        .add_usock(&new, Some(EpollEvents::UDT_EPOLL_ERR | EpollEvents::UDT_EPOLL_IN))
                         .unwrap();
                 } else {
                     let msg = &mut [0u8; 100];

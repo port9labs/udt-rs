@@ -1,3 +1,7 @@
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+
 extern crate libc;
 
 use libc::{c_char, c_double, c_int, c_long, c_uchar, c_void};
@@ -218,7 +222,7 @@ pub struct PerfMon {
     pub byte_avail_rcv_buf: c_int,
 }
 
-extern {
+extern "C" {
 
     pub fn udt_startup();
     pub fn udt_cleanup();

@@ -29,10 +29,10 @@ fn main() {
     }
     cfg.include(&udt4_src);
     cfg.file("udt_wrap.cpp");
-    if cfg!(target_os = "macox") {
+    if cfg!(target_os = "macos") {
         cfg.define("osx", None);
     }
-    if cfg!(target_os = "unix") {
+    if cfg!(target_os = "linux") {
         cfg.define("LINUX", None)
            .define("AMD64", None);
 

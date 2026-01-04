@@ -46,7 +46,7 @@ extern crate libudt4_sys as raw;
 #[cfg(windows)]
 extern crate winapi;
 
-use std::sync::{Once, ONCE_INIT};
+use std::sync::{Once};
 extern crate libc;
 
 use libc::c_int;
@@ -106,13 +106,13 @@ bitflags! {
 /// assert!(events.contains(UDT_EPOLL_OUT));
 /// assert!(! events.contains(UDT_EPOLL_ERR));
 /// ```
-    pub flags EpollEvents: c_int {
+    pub struct EpollEvents: c_int {
         /// An Epoll Event to watch for read events
-        const UDT_EPOLL_IN = 0x1,
+        const UDT_EPOLL_IN = 0x1;
         /// An Epoll Event to watch for write events
-        const UDT_EPOLL_OUT = 0x4,
+        const UDT_EPOLL_OUT = 0x4;
         /// An Epoll Event to watch for exception events
-        const UDT_EPOLL_ERR = 0x8
+        const UDT_EPOLL_ERR = 0x8;
     }
 }
 
@@ -135,7 +135,7 @@ macro_rules! impl_udt_opt {
 /// It is safe to call this function multiple times.  A corresponding cleanup function will
 /// automatically be called when the program exists.
 pub fn init() {
-    static INIT: Once = ONCE_INIT;
+    static INIT: Once = Once::new();
     INIT.call_once(|| unsafe {
         trace!("did INIT");
         raw::udt_startup();
